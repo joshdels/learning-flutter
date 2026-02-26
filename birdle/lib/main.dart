@@ -52,9 +52,12 @@ class Tile extends StatelessWidget {
   }
 }
 
-class GamePage extends StatelessWidget {
+class GamePage extends StatefulWidget {
   GamePage({super.key});
   final Game _game = Game();
+
+  @override
+  State<GamePage> createState() => _GamePageState();
 
   @override
   Widget build(BuildContext context) {
@@ -126,4 +129,11 @@ class GuessInput extends StatelessWidget {
       ],
     );
   }
+}
+
+
+
+class _GamePageState extends State<GamePage> {
+  final Game _game = Game();
+
 }
