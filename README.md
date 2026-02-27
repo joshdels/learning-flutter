@@ -3,15 +3,15 @@ Before UI, you must be comfortable thinking in Dart.
 
 What to Master
 From the official Dart docs:
-Variables (var, final, const)
+Variables (var, final, const) -> done
 Data types (String, int, double, bool, List, Map, Set)
-Null safety (?, !)
-Functions (positional vs named parameters)
-Classes and constructors
-this
-Enums
-Basic OOP
-Async (Future, async, await)
+Null safety (?, !) -> done (!nullassertion) (?nullsafety)
+Functions (positional vs named parameters) -> done
+Classes and constructors  -> done
+this -> done
+Enums - immutable
+Basic OOP -OOP -> done (encap/abstract/polymorph/inheritance)
+Async (Future, async, await) ->
 
 📖 Documentation to focus on:
 Dart Language Tour
@@ -21,9 +21,9 @@ Null Safety section
 
 🔁 Drill 1: Console Repetition Exercises
 Create a simple Dart console app.
+
 Exercise 1: Data Types
 Recreate:
-
 List<String> names = [];
 Map<String, int> scores = {};
 
