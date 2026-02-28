@@ -11,7 +11,7 @@ Classes and constructors  -> done
 this -> done
 Enums - immutable
 Basic OOP -OOP -> done (encap/abstract/polymorph/inheritance)
-Async (Future, async, await) ->
+Async (Future, async, await) -> done
 
 📖 Documentation to focus on:
 Dart Language Tour
@@ -22,7 +22,7 @@ Null Safety section
 🔁 Drill 1: Console Repetition Exercises
 Create a simple Dart console app.
 
-Exercise 1: Data Types
+Exercise 1: Data Types -> done
 Recreate:
 List<String> names = [];
 Map<String, int> scores = {};
@@ -87,7 +87,7 @@ Handle error with try/catch
 
 You must understand this before Flutter.
 
-🔵 PHASE 2 — Flutter Core Widget Fundamentals
+🔵 PHASE 2 — Flutter Core Widget Fundamentals -> onging
 
 Now UI.
 
@@ -98,6 +98,8 @@ Forget providers.
 Just learn:
 MaterialApp
 Scaffold
+  -scaffold got 
+    1 appbar (pinaka title) 2 body (center context)
 AppBar
 Container
 Row
