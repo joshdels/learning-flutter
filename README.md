@@ -88,6 +88,7 @@ Handle error with try/catch
 You must understand this before Flutter.
 
 🔵 PHASE 2 — Flutter Core Widget Fundamentals -> onging
+practice here - https://docs.flutter.dev/ui
 
 Now UI.
 
@@ -96,18 +97,18 @@ Forget architecture.
 Forget providers.
 
 Just learn:
-MaterialApp
+MaterialApp -done its the mother app
 Scaffold
   -scaffold got 
     1 appbar (pinaka title) 2 body (center context)
-AppBar
-Container
-Row
-Column
-Expanded
-Padding
-Center
-Text
+AppBar -done
+Container -done
+Row - done
+Column -done
+Expanded 
+Padding -done
+Center - done
+Text -done
 ElevatedButton
 ListView
 TextField
@@ -125,7 +126,6 @@ Rebuild the Flutter counter app without looking at docs.
 If stuck:
 Look up:
 setState
-
 FloatingActionButton
 
 🟢 Challenge 2: Layout Practice
