@@ -1,32 +1,41 @@
 import 'package:flutter/material.dart';
 
-class MyButton extends StatelessWidget {
-  const MyButton({super.key});
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        print('Mybutton slapped!');
-      },
-      child: Container(
-        height: 50,
-        padding: const EdgeInsets.all(8),
-        margin: const EdgeInsets.symmetric(horizontal: 30),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
-          color: const Color.fromARGB(255, 195, 74, 74),
-        ),
-        child: const Center(child: Text('Stop wait a minute'))
-      ),
-    );
+    return Home();
   }
 }
 
-void main() {
-  runApp(
-    const MaterialApp(
-      home: Scaffold(body: Center(child: MyButton())),
-    ),
-  );
+class Home extends StatelessWidget {
+  const Home({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Joshua Practice App'),
+          backgroundColor: Colors.red,
+          leading: IconButton(onPressed: null, icon: Icon(Icons.menu)),
+        ),
+        body: const Center(child: Text('I am center')),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            print('pressed na oi');
+          },
+          backgroundColor: Colors.red,
+          foregroundColor: Colors.white,
+          child: Icon(Icons.add),
+        ),
+      ),
+      debugShowCheckedModeBanner: false,
+    );
+  }
 }
