@@ -1,4 +1,5 @@
 https://chatgpt.com/share/69a3e541-a19c-8002-bfa9-22d05a523a06
+https://api.flutter.dev/flutter/material/AppBar-class.html
 
 
 this is mostly for flutter drills to have mastery and innate skillness

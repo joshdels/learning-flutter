@@ -97,21 +97,21 @@ Forget architecture.
 Forget providers.
 
 Just learn:
-MaterialApp -done its the mother app
-Scaffold
+MaterialApp -done its the mother app (whole app)
+Scaffold -done (One Screen)
   -scaffold got 
     1 appbar (pinaka title) 2 body (center context)
-AppBar -done
-Container -done
-Row - done
-Column -done
-Expanded 
+AppBar -done (top)
+Container -done (one child, one box)
+Row - done (organize, multiple child)
+Column -done (organizer, multiple child)
+Expanded - done (takes the whole space)
 Padding -done
 Center - done
 Text -done
-ElevatedButton
-ListView
-TextField
+ElevatedButton -done (using state)
+ListView - done ()
+TextField -
 setState
 
 That’s it.
