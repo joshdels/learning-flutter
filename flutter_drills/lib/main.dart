@@ -11,44 +11,62 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: const Text('Expanded App'), backgroundColor: Colors.red,),
-        body: const ElevatedApp(),
+        appBar: AppBar(
+          title: const Text('Expanded App'),
+          backgroundColor: Colors.red,
+        ),
+        body: const StateButton(),
       ),
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
-class ElevatedApp extends StatefulWidget {
-  const ElevatedApp({super.key});
+class StateButton extends StatefulWidget {
+  const StateButton({super.key});
 
   // Declare Stateful
   @override
-  State<ElevatedApp> createState() => _ElevatedAppState();
+  State<StateButton> createState() => _ButtonState();
 }
 
-class _ElevatedAppState extends State<ElevatedApp> {
+class _ButtonState extends State<StateButton> {
+  int _count = 0;
+
+  void handleIncrement() {
+    setState(() {
+      _count++;
+    });
+  }
+
+  void resetCount() {
+    setState(() {
+      _count = 0;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final ButtonStyle style = ElevatedButton.styleFrom(
-      textStyle: const TextStyle(fontSize: 20),
-    );
-
     return Center(
       child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text('current Count $_count', style: const TextStyle(fontSize: 24)),
+          const SizedBox(height: 20),
           ElevatedButton(
-            style: style,
-            onPressed: null,
-            child: const Text('Disabled'),
+            style: ElevatedButton.styleFrom(
+              minimumSize: const Size(200, 50),
+              backgroundColor: Colors.red,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+            ),
+            onPressed: handleIncrement,
+            child: const Text('Increment'),
           ),
-          const SizedBox(height: 30),
-          ElevatedButton(
-            style: style,
-            onPressed: () {},
-            child: const Text('Enable'),
-          ),
+          const SizedBox(height: 20),
+          ElevatedButton(onPressed: resetCount, child: const Text('Reset')),
         ],
       ),
     );
