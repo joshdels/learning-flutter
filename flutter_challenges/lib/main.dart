@@ -1,82 +1,61 @@
-/*
-🟢 Challenge 4: Form App
-
-Make:
-TextField
-Button
-When pressed → show text below
-This forces you to learn:
-TextEditingController
-setState
-*/
-
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const MainApp());
-}
+void main() => runApp(const BottomNavigationBarExampleApp());
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class BottomNavigationBarExampleApp extends StatelessWidget {
+  const BottomNavigationBarExampleApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(title: Text("Form Practice")),
-        body: Form(),
-      ),
-      debugShowCheckedModeBanner: false,
-    );
+    return const MaterialApp(home: BottomNavigationBarExample());
   }
 }
 
-class Form extends StatefulWidget {
-  const Form({super.key});
+class BottomNavigationBarExample extends StatefulWidget {
+  const BottomNavigationBarExample({super.key});
 
   @override
-  State<Form> createState() => _FormState();
+  State<BottomNavigationBarExample> createState() =>
+      _BottomNavigationBarExampleState();
 }
 
-class _FormState extends State<Form> {
-  final TextEditingController _controller = TextEditingController();
+class _BottomNavigationBarExampleState
+    extends State<BottomNavigationBarExample> {
+  int _selectedIndex = 0;
+  static const TextStyle optionStyle = TextStyle(
+    fontSize: 30,
+    fontWeight: FontWeight.bold,
+  );
 
-  String displayName = "";
+  static const List<Widget> _widgetOptions = <Widget>[
+    Text('Index 0: Home', style: optionStyle),
+    Text('Index 1: Business', style: optionStyle),
+    Text('Index 2: School', style: optionStyle),
+  ];
 
-  void handleShow() {
+  void _onItemTapped(int index) {
     setState(() {
-      displayName = _controller.text;
+      _selectedIndex = index;
     });
-    print(displayName);
-  }
-
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(
-            width: 300,
-            child: TextField(
-              controller: _controller,
-              obscureText: true,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Name',
-              ),
-            ),
+    return Scaffold(
+      appBar: AppBar(title: const Text('BottomNavigationBar Sample')),
+      body: Center(child: _widgetOptions.elementAt(_selectedIndex)),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.business),
+            label: 'Business',
           ),
-          const SizedBox(height: 20),
-          ElevatedButton(onPressed: handleShow, child: Text('Show Name')),
-          const SizedBox(height: 20),
-          Text("My Name is $displayName"),
+          BottomNavigationBarItem(icon: Icon(Icons.school), label: 'School'),
         ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.amber[800],
+        onTap: _onItemTapped,
       ),
     );
   }

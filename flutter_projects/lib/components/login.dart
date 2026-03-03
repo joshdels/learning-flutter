@@ -11,6 +11,7 @@ class LoginSection extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Image.asset('assets/sample1.png', width: 150),
           TextField(
             decoration: InputDecoration(
               border: OutlineInputBorder(),
@@ -18,12 +19,7 @@ class LoginSection extends StatelessWidget {
             ),
           ),
           SizedBox(height: 8),
-          TextField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: 'Password',
-            ),
-          ),
+          PasswordField(),
           SizedBox(height: 15),
           SizedBox(
             width: double.infinity,
@@ -60,6 +56,36 @@ class LoginSection extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class PasswordField extends StatefulWidget {
+  const PasswordField({super.key});
+
+  @override
+  State<PasswordField> createState() => _PasswordField();
+}
+
+class _PasswordField extends State<PasswordField> {
+  bool _isHidden = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      obscureText: _isHidden,
+      decoration: InputDecoration(
+        border: const OutlineInputBorder(),
+        hintText: 'Password',
+        suffixIcon: IconButton(
+          icon: Icon(_isHidden ? Icons.visibility_off : Icons.visibility),
+          onPressed: () {
+            setState(() {
+              _isHidden = !_isHidden;
+            });
+          },
+        ),
       ),
     );
   }

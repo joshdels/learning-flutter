@@ -1,73 +1,63 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    const MaterialApp(debugShowCheckedModeBanner: false, home: HomeRoute()),
+  );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class HomeRoute extends StatelessWidget {
+  const HomeRoute({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Expanded App'),
-          backgroundColor: Colors.red,
-        ),
-        body: const StateButton(),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Front Page today'),
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
       ),
-      debugShowCheckedModeBanner: false,
+      body: Center(
+        child: ElevatedButton(
+          style: ButtonStyle(
+            backgroundColor: WidgetStateProperty.all(Colors.green),
+            foregroundColor: WidgetStateProperty.all(Colors.white),
+          ),
+          child: const Text('Click Me!'),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const SecondRoute()),
+            );
+          },
+        ),
+      ),
     );
   }
 }
 
-class StateButton extends StatefulWidget {
-  const StateButton({super.key});
-
-  // Declare Stateful
-  @override
-  State<StateButton> createState() => _ButtonState();
-}
-
-class _ButtonState extends State<StateButton> {
-  int _count = 0;
-
-  void handleIncrement() {
-    setState(() {
-      _count++;
-    });
-  }
-
-  void resetCount() {
-    setState(() {
-      _count = 0;
-    });
-  }
+class SecondRoute extends StatelessWidget {
+  const SecondRoute({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text('current Count $_count', style: const TextStyle(fontSize: 24)),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              minimumSize: const Size(200, 50),
-              backgroundColor: Colors.red,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-            ),
-            onPressed: handleIncrement,
-            child: const Text('Increment'),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Router Page na daw"),
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
+      ),
+      body: Center(
+        child: ElevatedButton(
+          style: ButtonStyle(
+            backgroundColor: WidgetStateProperty.all(Colors.green),
+            foregroundColor: WidgetStateProperty.all(Colors.white),
           ),
-          const SizedBox(height: 20),
-          ElevatedButton(onPressed: resetCount, child: const Text('Reset')),
-        ],
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: const Text('Home Baby!'),
+        ),
       ),
     );
   }

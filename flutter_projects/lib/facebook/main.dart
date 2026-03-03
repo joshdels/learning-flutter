@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../appbar/appbar.dart';
-import '../inputbar/inputbar.dart';
-import '../mydaysection/mydaysection.dart';
-import '../postsection/postsection.dart';
+import 'appbar/appbar.dart';
+import 'inputbar/inputbar.dart';
+import 'mydaysection/mydaysection.dart';
+import 'postsection/postsection.dart';
 
 void main() {
   runApp(const MainApp());
