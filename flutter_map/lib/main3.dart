@@ -1,15 +1,21 @@
 /* 
-🟡 Exercise 3 — Multiple Layers
+🟢 Exercise 2 — Tap to Add Marker
 
-Add:
+Goal:
+When user taps map
+Add marker to that location
+Store markers in List
 
-TileLayer
-MarkerLayer
-PolylineLayer
-Toggle polyline visibility with button
+Hint:
+List<Marker> markers = [];
+setState(() {
+  markers.add(newMarker);
+});
 
 This teaches:
-Conditional widget rendering
+State management
+Map interaction
+Layer updating
 
 */
 

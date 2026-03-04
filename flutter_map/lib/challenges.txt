@@ -1,0 +1,276 @@
+🧱 Core Structure (Mental Model)
+FlutterMap(
+  options: MapOptions(),
+  children: [
+    TileLayer(),
+    MarkerLayer(),
+    PolylineLayer(),
+    PolygonLayer(),
+  ],
+)
+
+Think of it like:
+
+FlutterMap
+ ├── MapOptions (configuration)
+ └── Layers (stacked widgets)
+       ├── TileLayer (map image)
+       ├── MarkerLayer
+       ├── PolylineLayer
+       └── PolygonLayer
+
+It works like a Stack. Layers are drawn on top of each other.
+
+🧩 Main Components You Must Practice
+1️⃣ FlutterMap (Main Widget)
+
+This is the container.
+
+Practice:
+
+Wrap it in Expanded
+
+Wrap it in SizedBox
+
+Place it inside a Stack
+
+2️⃣ MapOptions (Controls Behavior)
+options: MapOptions(
+  initialCenter: LatLng(14.5995, 120.9842),
+  initialZoom: 13,
+  onTap: (tapPosition, point) {
+    print(point);
+  },
+)
+
+Practice drills:
+
+Change zoom dynamically
+
+Detect tap → print lat/lng
+
+Restrict zoom min/max
+
+3️⃣ TileLayer (The Map Background)
+TileLayer(
+  urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+)
+
+This loads the actual map.
+
+Practice:
+
+Change tile server
+
+Add userAgentPackageName
+
+Try satellite tiles
+
+4️⃣ MarkerLayer
+MarkerLayer(
+  markers: [
+    Marker(
+      point: LatLng(14.5995, 120.9842),
+      width: 40,
+      height: 40,
+      child: Icon(Icons.location_pin, color: Colors.red),
+    ),
+  ],
+)
+
+Important concept:
+Marker’s child is just a normal Flutter widget.
+
+Practice:
+
+Use Container instead of Icon
+
+Add GestureDetector to marker
+
+Show Dialog on tap
+
+5️⃣ PolylineLayer (Lines / Routes)
+PolylineLayer(
+  polylines: [
+    Polyline(
+      points: [
+        LatLng(14.59, 120.98),
+        LatLng(14.60, 120.99),
+      ],
+      strokeWidth: 4,
+      color: Colors.blue,
+    ),
+  ],
+)
+
+Practice:
+
+Draw triangle
+
+Draw fake GPS route
+
+Change thickness
+
+6️⃣ PolygonLayer (GIS Power 🔥)
+PolygonLayer(
+  polygons: [
+    Polygon(
+      points: [
+        LatLng(14.59, 120.98),
+        LatLng(14.60, 120.99),
+        LatLng(14.61, 120.97),
+      ],
+      color: Colors.green.withOpacity(0.4),
+    ),
+  ],
+)
+
+Practice:
+
+Draw square boundary
+
+Fill with color
+
+Add border stroke
+
+🛠 Structured Practice Plan (Hands-On Only)
+🟢 Exercise 1 — Basic Map
+
+Goal:
+
+Show OpenStreetMap
+
+Set center to your location (Libertad PH 👀)
+
+Set zoom to 15
+
+🟢 Exercise 2 — Tap to Add Marker
+
+Goal:
+
+When user taps map
+
+Add marker to that location
+
+Store markers in List
+
+Hint:
+
+List<Marker> markers = [];
+setState(() {
+  markers.add(newMarker);
+});
+
+This teaches:
+
+State management
+
+Map interaction
+
+Layer updating
+
+🟡 Exercise 3 — Multiple Layers
+
+Goal:
+
+Add:
+
+TileLayer
+
+MarkerLayer
+
+PolylineLayer
+
+Toggle polyline visibility with button
+
+This teaches:
+
+Conditional widget rendering
+
+🟡 Exercise 4 — Floating UI Controls
+
+Wrap map in Stack
+
+Add:
+
+Positioned(
+  bottom: 20,
+  right: 20,
+  child: FloatingActionButton(...)
+)
+
+Practice:
+
+Zoom in button
+
+Zoom out button
+
+Center map button
+
+🔴 Exercise 5 — Fake GIS App
+
+Build:
+
+Map
+
+5 markers
+
+Draw boundary polygon
+
+On marker tap → show bottom sheet
+
+Now you're thinking like real GIS dashboard.
+
+🎯 Advanced Structure (Very Important)
+
+Use MapController
+
+final MapController _mapController = MapController();
+
+Attach to FlutterMap:
+
+FlutterMap(
+  mapController: _mapController,
+)
+
+Now you can:
+
+_mapController.move(LatLng(...), 15);
+
+Practice:
+
+Animate camera
+
+Jump to marker
+
+Reset map
+
+🧠 Mental Model You Should Have
+
+Think of flutter_map like:
+
+MapOptions = Brain
+
+TileLayer = Background
+
+MarkerLayer = UI pins
+
+PolylineLayer = Paths
+
+PolygonLayer = Areas
+
+MapController = Remote control
+
+🔥 Final Practice Challenge (Master Level)
+
+Build this:
+
+✔ Tap to add marker
+✔ Draw polygon from tapped points
+✔ Button → clear all
+✔ Button → switch tile layer
+✔ Show lat/lng on screen
+
+If you can do this without tutorial…
+
+You understand flutter_map structure fully.
