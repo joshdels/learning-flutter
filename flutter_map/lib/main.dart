@@ -30,73 +30,97 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class HomePage extends StatelessWidget {
-  HomePage({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
-  final GlobalKey<MapPageState> mapKey = GlobalKey<MapPageState>();
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  bool isActive = true;
+
+  void handleActive(bool value) {
+    setState(() {
+      isActive = value;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('First Map Practice')),
-      body: Column(
-        children: [Expanded(child: MapPage(key: mapKey))],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => mapKey.currentState?.clearMarkers(),
-        child: const Icon(Icons.delete),
+      body: Stack(
+        children: [
+          MapPage(isActive: isActive),
+          Positioned(
+            bottom: 20,
+            right: 20,
+            child: FloatingSection(value: isActive, onChanged: handleActive),
+          ),
+        ],
       ),
     );
   }
 }
 
-class MapPage extends StatefulWidget {
-  const MapPage({super.key});
+class MapPage extends StatelessWidget {
+  final bool isActive;
 
-  @override
-  State<MapPage> createState() => MapPageState();
-}
-
-class MapPageState extends State<MapPage> {
-  final List<Marker> markers = [];
-
-  void clearMarkers() {
-    setState(() {
-      print("deleting");
-      markers.clear();
-    });
-  }
-
-  void addMarkers(LatLng latlng) {
-    setState(() {
-      print("Tapped at $latlng");
-      markers.add(
-        Marker(
-          point: latlng,
-          child: Icon(Icons.location_pin, color: Colors.blue, size: 30),
-        ),
-      );
-    });
-  }
+  const MapPage({super.key, required this.isActive});
 
   @override
   Widget build(BuildContext context) {
     final LatLng point = LatLng(7.0639, 125.6083);
 
     return FlutterMap(
-      options: MapOptions(
-        initialCenter: point,
-        initialZoom: 15,
-        onTap: (tapPosition, latlng) {
-          addMarkers(latlng);
-        },
-      ),
+      options: MapOptions(initialCenter: point, initialZoom: 15),
       children: [
         TileLayer(
           urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
         ),
-        MarkerLayer(markers: markers),
+        if (isActive)
+          MarkerLayer(
+            markers: [
+              Marker(
+                point: LatLng(7.0639, 125.6083),
+                child: Icon(Icons.heart_broken, size: 50, color: Colors.blue),
+              ),
+            ],
+          ),
+        if (isActive)
+          PolylineLayer(
+            polylines: [
+              Polyline(
+                points: [point, LatLng(7.065, 125.61), LatLng(7.067, 125.605)],
+                strokeWidth: 4,
+                color: Colors.red,
+              ),
+            ],
+          ),
       ],
+    );
+  }
+}
+
+class FloatingSection extends StatelessWidget {
+  final bool value;
+  final ValueChanged<bool> onChanged;
+
+  const FloatingSection({
+    super.key,
+    required this.value,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 150,
+      height: 150,
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(color: Colors.white),
+      child: Switch(value: value, focusColor: Colors.red, onChanged: onChanged),
     );
   }
 }
