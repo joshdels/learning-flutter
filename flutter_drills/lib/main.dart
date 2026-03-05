@@ -1,159 +1,84 @@
-// https://docs.flutter.dev/ui/layout/tutorial
-
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-void main() => runApp(MyApp());
+void main() async {
+  runApp(HomePage());
+}
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
   Widget build(BuildContext context) {
-    const String appTitle = 'Flutter layout demo';
     return MaterialApp(
-      title: appTitle,
       home: Scaffold(
-        appBar: AppBar(title: const Text(appTitle)),
-        body: const SingleChildScrollView(
-          child: Column(
-            children: [
-              ImageSection(
-                image:
-                    'https://raw.githubusercontent.com/flutter/website/main/examples/layout/lakes/step5/images/lake.jpg',
-              ),
-              TitleSection(
-                name: 'Oeschinen Lake Campground',
-                location: 'Kandersteg, Switzerland',
-              ),
-              ButtonSection(),
-              TextSection(
-                description:
-                    'Lake Oeschinen lies at the foot of the Blüemlisalp in the '
-                    'Bernese Alps. Situated 1,578 meters above sea level, it '
-                    'is one of the larger Alpine Lakes. A gondola ride from '
-                    'Kandersteg, followed by a half-hour walk through pastures '
-                    'and pine forest, leads you to the lake, which warms to 20 '
-                    'degrees Celsius in the summer. Activities enjoyed here '
-                    'include rowing, and riding the summer toboggan run.',
-              ),
-            ],
-          ),
+        appBar: AppBar(title: Text('Fetch Practice')),
+        body: Center(
+          child: Column(children: [TextSection(text: "Sample"), InputSection(onSubmit: onSubmit, onChange: onChange, userNumber: userNumber)]),
         ),
       ),
-    );
-  }
-}
-
-class TitleSection extends StatelessWidget {
-  const TitleSection({super.key, required this.name, required this.location});
-
-  final String name;
-  final String location;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(32),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: Text(
-                    name,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Text(location, style: TextStyle(color: Colors.grey[500])),
-              ],
-            ),
-          ),
-          Icon(Icons.star, color: Colors.red[500]),
-          const Text('41'),
-        ],
-      ),
-    );
-  }
-}
-
-class ButtonSection extends StatelessWidget {
-  const ButtonSection({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final Color color = Theme.of(context).primaryColor;
-    return SizedBox(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          ButtonWithText(color: color, icon: Icons.call, label: 'CALL'),
-          ButtonWithText(color: color, icon: Icons.near_me, label: 'ROUTE'),
-          ButtonWithText(color: color, icon: Icons.share, label: 'SHARE'),
-        ],
-      ),
-    );
-  }
-}
-
-class ButtonWithText extends StatelessWidget {
-  const ButtonWithText({
-    super.key,
-    required this.color,
-    required this.icon,
-    required this.label,
-  });
-
-  final Color color;
-  final IconData icon;
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(icon, color: color),
-        Padding(
-          padding: const EdgeInsets.only(top: 8),
-          child: Text(
-            label,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w400,
-              color: color,
-            ),
-          ),
-        ),
-      ],
     );
   }
 }
 
 class TextSection extends StatelessWidget {
-  const TextSection({super.key, required this.description});
+  final String text;
 
-  final String description;
+  const TextSection({super.key, required this.text});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(32),
-      child: Text(description, softWrap: true),
+    return Text(text);
+  }
+}
+
+class InputSection extends StatelessWidget {
+  final bool onSubmit;
+  final String onChange;
+  final String userNumber;
+
+  const InputSection({
+    super.key,
+    required this.onSubmit,
+    required this.onChange,
+    required this.userNumber,
+  });
+
+  void inputSubmit() {}
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        TextField(
+          decoration: InputDecoration(
+            labelText: 'enter a number',
+            border: OutlineInputBorder(),
+          ),
+        ),
+        ElevatedButton(onPressed: inputSubmit, child: Text('Submit')),
+      ],
     );
   }
 }
 
-class ImageSection extends StatelessWidget {
-  const ImageSection({super.key, required this.image});
+Future<void> fetchData(int number) async {
+  try {
+    final response = await http.get(
+      Uri.parse('https://jsonplaceholder.typicode.com/albums/${number}'),
+    );
 
-  final String image;
-
-  @override
-  Widget build(BuildContext context) {
-    return Image.network(image, width: 600, height: 240, fit: BoxFit.cover);
+    if (response.statusCode == 200) {
+      final jsonData = json.decode(response.body);
+      print("$jsonData");
+    }
+  } catch (e) {
+    print("$e");
   }
 }

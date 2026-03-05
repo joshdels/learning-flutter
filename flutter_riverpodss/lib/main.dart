@@ -2,48 +2,90 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'provider.dart';
 
-void main() {
-  runApp(const ProviderScope(child: MaterialApp(home: HomePage())));
+void main() async {
+  runApp(ProviderScope(child: HomePage()));
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("With Riverpod")),
-      body: const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [CounterDisplay(), IncrementButton()],
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: Text('Fetch Practice')),
+        body: Center(
+          child: Padding(
+            padding: EdgeInsets.all(30),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [TextSection(), SizedBox(height: 30), InputSection()],
+            ),
+          ),
         ),
       ),
     );
   }
 }
 
-class CounterDisplay extends ConsumerWidget {
-  const CounterDisplay({super.key});
+class TextSection extends ConsumerWidget {
+  const TextSection({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final counter = ref.watch(counterProvider);
+    final asyncValue = ref.watch(userInputProvider);
 
-    return Text("Counter: $counter", style: const TextStyle(fontSize: 32));
+    return asyncValue.when(
+      data: (text) => Text(text),
+      loading: () => const CircularProgressIndicator(), // new ahh
+      error: (err, stack) => Text("Error: $err"),
+    );
   }
 }
 
-class IncrementButton extends ConsumerWidget {
-  const IncrementButton({super.key});
+class InputSection extends ConsumerStatefulWidget {
+  const InputSection({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return ElevatedButton(
-      onPressed: () {
-        ref.read(counterProvider.notifier).increment();
-      },
-      child: const Text("Increment"),
+  ConsumerState<InputSection> createState() => _InputSectionState();
+}
+
+class _InputSectionState extends ConsumerState<InputSection> {
+  // i need to understand this part
+  final TextEditingController controller = TextEditingController();
+
+  void inputSubmit() {
+    final value = int.tryParse(controller.text);
+
+    if (value == null) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Enter a valid number")));
+      return;
+    }
+
+    ref.read(userInputProvider.notifier).fetchData(value);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        TextField(
+          controller: controller,
+          decoration: InputDecoration(
+            labelText: 'Enter a number',
+            border: OutlineInputBorder(),
+          ),
+        ),
+        SizedBox(height: 30),
+        ElevatedButton(onPressed: inputSubmit, child: Text('Submit')),
+      ],
     );
   }
 }
