@@ -1,15 +1,20 @@
 /* 
-🟡 Exercise 3 — Multiple Layers
+🟡 Exercise 4 — Floating UI Controls
+
+Wrap map in Stack
 
 Add:
 
-TileLayer
-MarkerLayer
-PolylineLayer
-Toggle polyline visibility with button
+Positioned(
+  bottom: 20,
+  right: 20,
+  child: FloatingActionButton(...)
+)
 
-This teaches:
-Conditional widget rendering
+Practice:
+Zoom in button
+Zoom out button
+Center map button
 
 */
 
@@ -38,12 +43,21 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool isActive = true;
+  final LatLng point = LatLng(7.0639, 125.6083);
+  final MapController _mapController = MapController();
 
-  void handleActive(bool value) {
-    setState(() {
-      isActive = value;
-    });
+  void _zoomIn() {
+    final zoom = _mapController.camera.zoom;
+    _mapController.move(_mapController.camera.center, zoom + 1);
+  }
+
+  void _zoomOut() {
+    final zoom = _mapController.camera.zoom;
+    _mapController.move(_mapController.camera.center, zoom - 1);
+  }
+
+  void _centerMap() {
+    _mapController.move(point, 15);
   }
 
   @override
@@ -52,11 +66,38 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(title: const Text('First Map Practice')),
       body: Stack(
         children: [
-          MapPage(isActive: isActive),
+          MapPage(controller: _mapController, center: point),
           Positioned(
-            bottom: 20,
-            right: 20,
-            child: FloatingSection(value: isActive, onChanged: handleActive),
+            top: 20,
+            left: 20,
+            child: Positioned(
+              right: 20,
+              bottom: 20,
+              child: Column(
+                children: [
+                  FloatingActionButton(
+                    heroTag: "zoomIn",
+                    mini: true,
+                    onPressed: _zoomIn,
+                    child: const Icon(Icons.add),
+                  ),
+                  const SizedBox(height: 10),
+                  FloatingActionButton(
+                    heroTag: "zoomOut",
+                    mini: true,
+                    onPressed: _zoomOut,
+                    child: const Icon(Icons.remove),
+                  ),
+                  const SizedBox(height: 10),
+                  FloatingActionButton(
+                    heroTag: "center",
+                    mini: true,
+                    onPressed: _centerMap,
+                    child: const Icon(Icons.center_focus_strong),
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),
@@ -65,62 +106,21 @@ class _HomePageState extends State<HomePage> {
 }
 
 class MapPage extends StatelessWidget {
-  final bool isActive;
+  final MapController controller;
+  final LatLng center;
 
-  const MapPage({super.key, required this.isActive});
+  const MapPage({super.key, required this.controller, required this.center});
 
   @override
   Widget build(BuildContext context) {
-    final LatLng point = LatLng(7.0639, 125.6083);
-
     return FlutterMap(
-      options: MapOptions(initialCenter: point, initialZoom: 15),
+      mapController: controller,
+      options: MapOptions(initialCenter: center, initialZoom: 15),
       children: [
         TileLayer(
           urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
         ),
-        if (isActive)
-          MarkerLayer(
-            markers: [
-              Marker(
-                point: LatLng(7.0639, 125.6083),
-                child: Icon(Icons.heart_broken, size: 50, color: Colors.blue),
-              ),
-            ],
-          ),
-        if (isActive)
-          PolylineLayer(
-            polylines: [
-              Polyline(
-                points: [point, LatLng(7.065, 125.61), LatLng(7.067, 125.605)],
-                strokeWidth: 4,
-                color: Colors.red,
-              ),
-            ],
-          ),
       ],
-    );
-  }
-}
-
-class FloatingSection extends StatelessWidget {
-  final bool value;
-  final ValueChanged<bool> onChanged;
-
-  const FloatingSection({
-    super.key,
-    required this.value,
-    required this.onChanged,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 150,
-      height: 150,
-      padding: EdgeInsets.all(16),
-      decoration: BoxDecoration(color: Colors.white),
-      child: Switch(value: value, focusColor: Colors.red, onChanged: onChanged),
     );
   }
 }

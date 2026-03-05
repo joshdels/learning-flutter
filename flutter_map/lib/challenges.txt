@@ -250,15 +250,10 @@ Reset map
 Think of flutter_map like:
 
 MapOptions = Brain
-
 TileLayer = Background
-
 MarkerLayer = UI pins
-
 PolylineLayer = Paths
-
 PolygonLayer = Areas
-
 MapController = Remote control
 
 🔥 Final Practice Challenge (Master Level)
