@@ -1,50 +1,5 @@
 import 'package:flutter/material.dart';
-
-void main() {
-  runApp(MyApp());
-}
-
-////////////////////////
-/// MODEL
-////////////////////////
-class CounterModel {
-  int value;
-
-  CounterModel(this.value);
-}
-
-////////////////////////
-/// VIEWMODEL
-////////////////////////
-class CounterViewModel extends ChangeNotifier {
-  CounterModel _model = CounterModel(0);
-
-  int get counter => _model.value;
-
-  void increment() {
-    _model.value++;
-    notifyListeners();
-  }
-
-  void decrement() {
-    _model.value--;
-    notifyListeners();
-  }
-}
-
-////////////////////////
-/// VIEW
-////////////////////////
-class MyApp extends StatelessWidget {
-  final CounterViewModel vm = CounterViewModel();
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: CounterPage(vm: vm),
-    );
-  }
-}
+import 'package:flutter_mvvm/ui/counterview/model_view/counter_viewmodel.dart';
 
 class CounterPage extends StatefulWidget {
   final CounterViewModel vm;
@@ -56,10 +11,10 @@ class CounterPage extends StatefulWidget {
 }
 
 class _CounterPageState extends State<CounterPage> {
-
   @override
   void initState() {
     super.initState();
+
     widget.vm.addListener(() {
       setState(() {});
     });
@@ -76,16 +31,15 @@ class _CounterPageState extends State<CounterPage> {
         ),
       ),
       floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           FloatingActionButton(
             onPressed: widget.vm.increment,
             child: const Icon(Icons.add),
           ),
-          const SizedBox(height: 10),
           FloatingActionButton(
             onPressed: widget.vm.decrement,
-            child: const Icon(Icons.remove),
+            child: const Icon(Icons.deck),
           ),
         ],
       ),

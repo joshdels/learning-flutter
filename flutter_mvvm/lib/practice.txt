@@ -1,0 +1,30 @@
+🥋 Drill 3 — MVVM Challenge (YOU IMPLEMENT)
+Build a Todo List App.
+Requirements
+Model
+
+Todo
+- title
+- isDone
+ViewModel
+
+Functions:
+addTodo(String title)
+toggleTodo(int index)
+removeTodo(int index)
+
+UI Must include:
+TextField
+Add Button
+ListView
+Checkbox
+Delete button
+Architecture
+models/
+   todo.dart
+
+viewmodels/
+   todo_viewmodel.dart
+
+views/
+   todo_page.dart
