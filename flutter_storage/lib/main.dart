@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'dart:io';
+import 'screen.dart';
 
-void main() {
-  runApp(const MainApp());
-}
+void main() async {
+  // Required for any async setup before runApp
+  WidgetsFlutterBinding.ensureInitialized();
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
-    );
+  if (Platform.isWindows || Platform.isLinux) {
+    // Desktop-specific setup
+    sqfliteFfiInit();
+    databaseFactory = databaseFactoryFfi;
   }
+
+  runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: TaskListScreen(),
+  ));
 }
