@@ -1,91 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'provider.dart';
 
-void main() async {
-  runApp(ProviderScope(child: HomePage()));
-}
-
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
+class CounterNotifier extends Notifier<int> {
   @override
-  State<HomePage> createState() => _HomePageState();
-}
+  int build() {
+    return 0;
+  }
 
-class _HomePageState extends State<HomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(title: Text('Fetch Practice')),
-        body: Center(
-          child: Padding(
-            padding: EdgeInsets.all(30),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [TextSection(), SizedBox(height: 30), InputSection()],
-            ),
-          ),
-        ),
-      ),
-    );
+  void increment() {
+    state++;
+  }
+
+  void decremenet() {
+    state--;
   }
 }
 
-class TextSection extends ConsumerWidget {
-  const TextSection({super.key});
+final counterProvider = NotifierProvider<CounterNotifier, int>(
+  CounterNotifier.new,
+);
+
+void main() {
+  runApp(ProviderScope(child: CountView()));
+}
+
+class CountView extends ConsumerWidget {
+  const CountView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final asyncValue = ref.watch(userInputProvider);
+    final counter = ref.watch(counterProvider);
 
-    return asyncValue.when(
-      data: (text) => Text(text),
-      loading: () => const CircularProgressIndicator(), // new ahh
-      error: (err, stack) => Text("Error: $err"),
-    );
-  }
-}
-
-class InputSection extends ConsumerStatefulWidget {
-  const InputSection({super.key});
-
-  @override
-  ConsumerState<InputSection> createState() => _InputSectionState();
-}
-
-class _InputSectionState extends ConsumerState<InputSection> {
-  // i need to understand this part
-  final TextEditingController controller = TextEditingController();
-
-  void inputSubmit() {
-    final value = int.tryParse(controller.text);
-
-    if (value == null) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text("Enter a valid number")));
-      return;
-    }
-
-    ref.read(userInputProvider.notifier).fetchData(value);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        TextField(
-          controller: controller,
-          decoration: InputDecoration(
-            labelText: 'Enter a number',
-            border: OutlineInputBorder(),
-          ),
+    return MaterialApp(
+      home: Scaffold(
+        body: Center(child: Text('Count: $counter')),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            ref.read(counterProvider.notifier).increment();
+          },
+          child: const Icon(Icons.add),
         ),
-        SizedBox(height: 30),
-        ElevatedButton(onPressed: inputSubmit, child: Text('Submit')),
-      ],
+      ),
     );
   }
 }
